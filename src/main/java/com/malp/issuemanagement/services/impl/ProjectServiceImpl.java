@@ -40,7 +40,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> getProjectCodeContains(String projectCode) {
-        return this.projectRepository.getProjectCodeContains(projectCode);
+        return this.projectRepository.getByProjectCodeContains(projectCode);
     }
 
     @Override

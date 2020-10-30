@@ -12,7 +12,7 @@ public class IssueManagementApplication {
         SpringApplication.run(IssueManagementApplication.class, args);
     }
 
-    @Bean // add an instance of this object to spring contianer
+    @Bean // add an instance of this object to spring container
     public ModelMapper getModelMapper() {
         return new ModelMapper();
     }

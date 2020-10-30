@@ -13,9 +13,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> getByProjectCode(String projectCode);
 
-    List<Project> getProjectCodeContains(String projectCode);
+    List<Project> getByProjectCodeContains(String projectCode);
 
-    Page<Project> getAll(Pageable pageable);
+    Page<Project> findAll(Pageable pageable);
 
-    List<Project> getAll(Sort sort);
+    List<Project> findAll(Sort sort);
 }
