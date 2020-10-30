@@ -1,7 +1,7 @@
 package com.malp.issuemanagement.services;
 
 import com.malp.issuemanagement.dtos.IssueDto;
-import org.springframework.data.domain.Page;
+import com.malp.issuemanagement.util.TPage;
 import org.springframework.data.domain.Pageable;
 
 public interface IssueService {
@@ -10,7 +10,7 @@ public interface IssueService {
 
     IssueDto getById(Long id);
 
-    Page<IssueDto> getAll(Pageable pageable);
+    TPage<IssueDto> getAll(Pageable pageable);
 
     Boolean delete(IssueDto issueDto);
 }

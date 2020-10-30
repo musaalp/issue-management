@@ -4,10 +4,13 @@ import com.malp.issuemanagement.dtos.IssueDto;
 import com.malp.issuemanagement.entities.Issue;
 import com.malp.issuemanagement.repositories.IssueRepository;
 import com.malp.issuemanagement.services.IssueService;
+import com.malp.issuemanagement.util.TPage;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 
 @Service // add this service to container as a singleton
 public class IssueServiceImpl implements IssueService {
@@ -40,8 +43,14 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public Page<IssueDto> getAll(Pageable pageable) {
-        return null;
+    public TPage<IssueDto> getAll(Pageable pageable) {
+
+        Page<Issue> page = this.issueRepository.findAll(pageable);
+        TPage tPage = new TPage<IssueDto>();
+        IssueDto[] issueDtos = modelMapper.map(page.getContent(), IssueDto[].class);
+        tPage.setStats(page, Arrays.asList(issueDtos));
+
+        return tPage;
     }
 
     @Override
