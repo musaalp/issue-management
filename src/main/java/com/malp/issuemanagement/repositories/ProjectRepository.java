@@ -11,7 +11,7 @@ import java.util.List;
 // JpaRepository lives as singleton in the container, therefore our Repositories life cycle is singleton
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    List<Project> getByProjectCode(String projectCode);
+    Project getByProjectCode(String projectCode);
 
     List<Project> getByProjectCodeContains(String projectCode);
 

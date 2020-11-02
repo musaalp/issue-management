@@ -1,8 +1,11 @@
 package com.malp.issuemanagement.services.impl;
 
+import com.malp.issuemanagement.dtos.ProjectDto;
 import com.malp.issuemanagement.entities.Project;
 import com.malp.issuemanagement.repositories.ProjectRepository;
+import com.malp.issuemanagement.repositories.UserRepository;
 import com.malp.issuemanagement.services.ProjectService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,29 +16,49 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public Project save(Project project) {
+    public ProjectDto save(ProjectDto projectDto) {
 
-        if (project.getProjectCode() == null) {
-            throw new IllegalArgumentException("Project code cannot be null");
+        Boolean isProjectAlreadyExist = (getByProjectCode(projectDto.getProjectCode())) != null;
+        if (isProjectAlreadyExist) {
+            throw new IllegalArgumentException("Project already exist with project code: " + projectDto.getProjectCode());
         }
 
-        return this.projectRepository.save(project);
+        Project project = modelMapper.map(projectDto, Project.class);        
+
+        project = this.projectRepository.save(project);
+
+        projectDto.setId(project.getId());
+
+        return projectDto;
     }
 
     @Override
-    public Project getById(Long id) {
-        return this.projectRepository.getOne(id);
+    public ProjectDto getById(Long id) {
+
+        Project project = this.projectRepository.getOne(id);
+
+        return modelMapper.map(project, ProjectDto.class);
     }
 
     @Override
-    public List<Project> getByProjectCode(String projectCode) {
-        return this.projectRepository.getByProjectCode(projectCode);
+    public ProjectDto getByProjectCode(String projectCode) {
+
+        Project project = this.projectRepository.getByProjectCode(projectCode);
+
+        if (project == null)
+            return null;
+
+        return modelMapper.map(project, ProjectDto.class);
     }
 
     @Override
