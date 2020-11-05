@@ -8,23 +8,30 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/projects")
 public class ProjectController {
-    private final ProjectServiceImpl projectService;
+    private final ProjectServiceImpl projectServiceImp;
 
-    public ProjectController(ProjectServiceImpl projectService) {
+    public ProjectController(ProjectServiceImpl projectServiceImp) {
 
-        this.projectService = projectService;
+        this.projectServiceImp = projectServiceImp;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDto> getById(@PathVariable("id") Long id) {
 
-        ProjectDto projectDto = this.projectService.getById(id);
+        ProjectDto projectDto = this.projectServiceImp.getById(id);
 
         return ResponseEntity.ok(projectDto);
     }
 
     @PostMapping
-    public ResponseEntity<ProjectDto> createProject(@RequestBody ProjectDto projectDto) {
-        return ResponseEntity.ok(this.projectService.save(projectDto));
+    public ResponseEntity<ProjectDto> create(@RequestBody ProjectDto projectDto) {
+
+        return ResponseEntity.ok(this.projectServiceImp.save(projectDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjectDto> update(@PathVariable("id") Long id, @RequestBody ProjectDto projectDto) {
+
+        return ResponseEntity.ok(this.projectServiceImp.update(id, projectDto));
     }
 }

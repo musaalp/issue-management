@@ -33,7 +33,7 @@ public class ProjectServiceImpl implements ProjectService {
             throw new IllegalArgumentException("Project already exist with project code: " + projectDto.getProjectCode());
         }
 
-        Project project = modelMapper.map(projectDto, Project.class);        
+        Project project = modelMapper.map(projectDto, Project.class);
 
         project = this.projectRepository.save(project);
 
@@ -75,5 +75,24 @@ public class ProjectServiceImpl implements ProjectService {
     public Boolean delete(Project project) {
         this.projectRepository.delete(project);
         return Boolean.TRUE;
+    }
+
+    public ProjectDto update(Long id, ProjectDto projectDto) {
+        Project project = this.projectRepository.getOne(id);
+
+        if (project == null)
+            throw new IllegalArgumentException("Project does not exist with Id:  " + id);
+
+        ProjectDto checkProject = getByProjectCode(projectDto.getProjectCode());
+        if (checkProject != null && checkProject.getId() != id) {
+            throw new IllegalArgumentException("Project already exist with project code: " + projectDto.getProjectCode());
+        }
+
+        project.setProjectCode(projectDto.getProjectCode());
+        project.setProjectName(projectDto.getProjectName());
+
+        this.projectRepository.save(project);
+
+        return modelMapper.map(project, ProjectDto.class);
     }
 }

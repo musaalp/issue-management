@@ -20,4 +20,6 @@ public interface ProjectService {
     Page<Project> getAll(Pageable pageable);
 
     Boolean delete(Project project);
+
+    ProjectDto update(Long id, ProjectDto projectDto);
 }
