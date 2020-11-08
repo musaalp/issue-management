@@ -2,11 +2,12 @@ package com.malp.issuemanagement.apis;
 
 import com.malp.issuemanagement.dtos.ProjectDto;
 import com.malp.issuemanagement.services.impl.ProjectServiceImpl;
+import com.malp.issuemanagement.util.ApiPaths;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/projects")
+@RequestMapping(ApiPaths.ProjectCtrl.CTRL)
 public class ProjectController {
     private final ProjectServiceImpl projectServiceImp;
 
