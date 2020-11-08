@@ -63,28 +63,44 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> getProjectCodeContains(String projectCode) {
+
         return this.projectRepository.getByProjectCodeContains(projectCode);
     }
 
     @Override
     public Page<Project> getAll(Pageable pageable) {
+
         return this.projectRepository.findAll(pageable);
     }
 
     @Override
-    public Boolean delete(Project project) {
+    public Boolean delete(ProjectDto projectDto) {
+
+        Project project = this.modelMapper.map(projectDto, Project.class);
+
         this.projectRepository.delete(project);
+
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean delete(Long id) {
+
+        this.projectRepository.deleteById(id);
+
         return Boolean.TRUE;
     }
 
     public ProjectDto update(Long id, ProjectDto projectDto) {
+
         Project project = this.projectRepository.getOne(id);
 
         if (project == null)
             throw new IllegalArgumentException("Project does not exist with Id:  " + id);
 
-        ProjectDto checkProject = getByProjectCode(projectDto.getProjectCode());
-        if (checkProject != null && checkProject.getId() != id) {
+        Project checkProject = this.projectRepository.getByProjectCodeAndIdNot(projectDto.getProjectCode(), id);
+
+        if (checkProject != null) {
             throw new IllegalArgumentException("Project already exist with project code: " + projectDto.getProjectCode());
         }
 

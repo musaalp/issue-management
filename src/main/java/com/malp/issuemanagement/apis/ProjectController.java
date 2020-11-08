@@ -16,7 +16,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectDto> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<ProjectDto> getById(@PathVariable(value = "id", required = true) Long id) {
 
         ProjectDto projectDto = this.projectServiceImp.getById(id);
 
@@ -30,8 +30,14 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProjectDto> update(@PathVariable("id") Long id, @RequestBody ProjectDto projectDto) {
+    public ResponseEntity<ProjectDto> update(@PathVariable(value = "id", required = true) Long id, @RequestBody ProjectDto projectDto) {
 
         return ResponseEntity.ok(this.projectServiceImp.update(id, projectDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable(value = "id", required = true) Long id) {
+
+        return ResponseEntity.ok(this.projectServiceImp.delete(id));
     }
 }
