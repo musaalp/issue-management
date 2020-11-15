@@ -5,12 +5,14 @@ import com.malp.issuemanagement.services.impl.ProjectServiceImpl;
 import com.malp.issuemanagement.util.ApiPaths;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(ApiPaths.ProjectCtrl.CTRL)
 @Api
+@Slf4j // gives an instance of log for logging
 public class ProjectController {
     private final ProjectServiceImpl projectServiceImp;
 
@@ -22,6 +24,8 @@ public class ProjectController {
     @GetMapping("/{id}")
     @ApiOperation(value = "Get by id operation", response = ProjectDto.class)
     public ResponseEntity<ProjectDto> getById(@PathVariable(value = "id", required = true) Long id) {
+
+        log.info("Project Controller ->");
 
         ProjectDto projectDto = this.projectServiceImp.getById(id);
 
