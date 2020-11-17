@@ -2,6 +2,7 @@ package com.malp.issuemanagement.services;
 
 import com.malp.issuemanagement.dtos.ProjectDto;
 import com.malp.issuemanagement.entities.Project;
+import com.malp.issuemanagement.util.TPage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,4 +25,6 @@ public interface ProjectService {
     Boolean delete(Long id);
 
     ProjectDto update(Long id, ProjectDto projectDto);
+
+    TPage<ProjectDto> getAllPageable(Pageable pageable);
 }

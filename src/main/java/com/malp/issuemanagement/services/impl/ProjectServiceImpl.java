@@ -5,11 +5,13 @@ import com.malp.issuemanagement.entities.Project;
 import com.malp.issuemanagement.repositories.ProjectRepository;
 import com.malp.issuemanagement.repositories.UserRepository;
 import com.malp.issuemanagement.services.ProjectService;
+import com.malp.issuemanagement.util.TPage;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service // add this service to container as a singleton
@@ -110,5 +112,16 @@ public class ProjectServiceImpl implements ProjectService {
         this.projectRepository.save(project);
 
         return modelMapper.map(project, ProjectDto.class);
+    }
+
+    @Override
+    public TPage<ProjectDto> getAllPageable(Pageable pageable) {        
+
+        Page<Project> page = this.projectRepository.findAll(pageable);
+        TPage<ProjectDto> tPage = new TPage<ProjectDto>();
+        ProjectDto[] projectDtos = modelMapper.map(page.getContent(), ProjectDto[].class);
+        tPage.setStats(page, Arrays.asList(projectDtos));
+
+        return tPage;
     }
 }

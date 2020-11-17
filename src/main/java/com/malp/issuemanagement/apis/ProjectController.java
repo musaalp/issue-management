@@ -3,9 +3,11 @@ package com.malp.issuemanagement.apis;
 import com.malp.issuemanagement.dtos.ProjectDto;
 import com.malp.issuemanagement.services.impl.ProjectServiceImpl;
 import com.malp.issuemanagement.util.ApiPaths;
+import com.malp.issuemanagement.util.TPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,13 @@ public class ProjectController {
     public ProjectController(ProjectServiceImpl projectServiceImp) {
 
         this.projectServiceImp = projectServiceImp;
+    }
+
+    @GetMapping("/pagination")
+    @ApiOperation(value = "Get all by pagination operation", response = ProjectDto.class)
+    public ResponseEntity<TPage<ProjectDto>> getAllByPagination(Pageable pageable) {
+
+        return ResponseEntity.ok(this.projectServiceImp.getAllPageable(pageable));
     }
 
     @GetMapping("/{id}")
